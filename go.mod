@@ -1,3 +1,3 @@
-module main
+module example.com/m
 
-go 1.17
+go 1.19
