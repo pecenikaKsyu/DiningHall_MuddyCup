@@ -5,11 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"net/http"
 	"time"
 )
 
 var waiterID = 0
+
+var avg = 0.00
+var summ = 0
+var counter = 0
 
 type Waiter struct {
 	ID int
@@ -54,24 +59,28 @@ func (w Waiter) work() {
 			maxWaitF := float64(delivery.MaxWait)
 			timeWaitedF := float64(now - delivery.PickUpTime)
 
-			if maxWaitF*1.4 > timeWaitedF {
+			if maxWaitF*1.4 >= timeWaitedF {
 				rating += 1
 			}
-			if maxWaitF*1.3 > timeWaitedF {
+			if maxWaitF*1.3 >= timeWaitedF {
 				rating += 1
 			}
-			if maxWaitF*1.2 > timeWaitedF {
+			if maxWaitF*1.2 >= timeWaitedF {
 				rating += 1
 			}
-			if maxWaitF*1.1 > timeWaitedF {
+			if maxWaitF*1.1 >= timeWaitedF {
 				rating += 1
 			}
-			if maxWaitF > timeWaitedF {
+			if maxWaitF >= timeWaitedF {
 				rating += 1
 			}
 
+			summ = summ + rating
+			counter += 1
+			avg = float64(summ/counter) + 0.5
+			fmt.Println("Average ", math.Ceil(avg))
+			fmt.Println(math.Ceil(avg))
 			fmt.Println(maxWaitF, " ", timeWaitedF)
-			fmt.Println("waited: ", timeWaitedF)
 			fmt.Println("Order", delivery.OrderId, " | Rating: ", rating)
 
 			tableList.mx.Unlock()

@@ -17,6 +17,7 @@ var kitchenHost = "http://localhost"
 // Crearea listelor pentru chelneri si mese
 var waiterList = newWaiterList()
 var tableList = newTableList()
+var OnlineCookedOrder = make([]Order, 0, 100)
 
 func main() {
 	args := os.Args
